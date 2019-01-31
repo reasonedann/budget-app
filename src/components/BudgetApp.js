@@ -49,6 +49,25 @@ export default class BudgetApp extends React.Component {
         }));
     }
 
+    componentDidMount = () => {
+        try {
+            const json = localStorage.getItem('expenses');
+            const expenses = JSON.parse(json);
+
+            if(expenses) {
+                this.setState(() => ({ expenses }));
+            }
+        }
+        catch (e) {
+        }
+    }
+    componentDidUpdate = (prevProps, prevState) => {
+        if (prevState.expenses.length !== this.state.expenses.length) {
+            const json = JSON.stringify(this.state.expenses);
+            localStorage.setItem('expenses', json)
+        }
+    }
+
     render = () => {
         const values = []
         this.state.expenses.map((expense) => values.push(expense.expenseCost));

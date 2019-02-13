@@ -1,25 +1,31 @@
-import React from 'react';
-import ExpenseItem from './ExpenseItem.js'
+import * as React from 'react';
+import ExpenseItem, {ExpenseType} from './ExpenseItem'
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled'
 
-const eurPln = 4.284;
+const eurPln: number = 4.284;
 
-export default class Expenses extends React.Component {
+interface IExpensesProps {
+    values: Array<number>;
+    handleDeleteExpenses: () => void;
+    hasExpenses: boolean;
+    expenses: Array<{expenseName: string, expenseCost: number}>;
+    handleDeleteSelectedExpense: (selectedExpense: ExpenseType) => void;
+}
 
-    toSumExpenses = (v) => {
-        const reducer = (acc, curValue) => acc + curValue;
+export default class AllExpenses extends React.Component<IExpensesProps> {
+
+    toSumExpenses = (v: Array<number>) => {
+        const reducer = (acc: number, curValue: number) => acc + curValue;
         return v.reduce(reducer, 0);
     }
-    toConvertExpenseToEur = (expensePln) => {
+    toConvertExpenseToEur = (expensePln: number) => {
         return expensePln / eurPln;
     }
 
     render() {
-        const eurValues = this.props.values.map((value) => this.toConvertExpenseToEur(value, 1));
-        console.log(eurValues)
+        const eurValues = this.props.values.map((value) => this.toConvertExpenseToEur(value));
         return (
             <div>
                 <HeadButtonContainer>
@@ -39,7 +45,7 @@ export default class Expenses extends React.Component {
                             expenseObj={expense}
                             expenseCost={expense.expenseCost.toFixed(1)}
                             expenseName={expense.expenseName}
-                            expenseCostEur={this.toConvertExpenseToEur(expense.expenseCost, 1).toFixed(1)}
+                            expenseCostEur={this.toConvertExpenseToEur(expense.expenseCost).toFixed(1)}
                             count={idx + 1}
                             handleDeleteSelectedExpense={this.props.handleDeleteSelectedExpense}
                         />

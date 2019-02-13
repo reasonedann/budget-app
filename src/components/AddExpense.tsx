@@ -1,12 +1,19 @@
-import React from 'react';
+import * as React from 'react';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled'
 
+interface IAddExpenseProps {
+    handleAddExpense: (expenseName: string, expenseCost: number) => string | undefined;
+};
+interface IAddExpenseState {
+    error: any;
+};
 
-export default class AddExpense extends React.Component {
-    constructor(props) {
+export default class AddExpense extends React.Component<IAddExpenseProps, IAddExpenseState> {
+    state: IAddExpenseState;
+
+    constructor(props: IAddExpenseProps) {
         super(props)
         this.addExpenseClick = this.addExpenseClick.bind(this);
         this.state = {
@@ -14,7 +21,7 @@ export default class AddExpense extends React.Component {
         }
     };
 
-    addExpenseClick(event) {
+    addExpenseClick(event: any) {
         event.preventDefault();
 
         const expenseNameXs = event.target.elements.expenseNameInput.value.trim();
@@ -79,27 +86,27 @@ const AddExpenseBox = styled.form`
 
 `;
 
-const InputsContainer = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-
-    div {
+    const InputsContainer = styled.div`
         display: flex;
-        justify-content: space-between;
-    }
+        flex-flow: row wrap;
+        align-items: center;
 
-    input {
-        padding: 10px 0;
-        border: 1px solid dimgrey;
-        font-size: 18px;
-        padding-left: 20px;
-    }
+        div {
+            display: flex;
+            justify-content: space-between;
+        }
 
-    p {
-        padding: 10px 5px;
-    }
-`;
+        input {
+            padding: 10px 0;
+            border: 1px solid dimgrey;
+            font-size: 18px;
+            padding-left: 20px;
+        }
+
+        p {
+            padding: 10px 5px;
+        }
+    `;
 
 const InputName = styled.input`
     width: 280px;

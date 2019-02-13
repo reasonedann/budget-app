@@ -1,17 +1,27 @@
-import React from 'react';
+import * as React from 'react';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled'
 
-const ExpenseItem = (props) => (
+export type ExpenseType = {expenseName: string, expenseCost: number};
+
+interface IExpenseItem {
+    count: number;
+    expenseName: string;
+    expenseCost: string; // bo się wyświetla jako string bo toFixed zrobiłam
+    expenseCostEur: string;
+    handleDeleteSelectedExpense: (selectedExpense: ExpenseType) => void;
+    expenseObj: ExpenseType;
+}
+
+const ExpenseItem = (props:IExpenseItem) => (
     <ExpenseContainer>
         <p>{props.count}. {props.expenseName}</p>
         <Costs>
             <div>{props.expenseCost} PLN</div>
             <div>{props.expenseCostEur} EUR</div>
         </Costs>
-        <button onClick={(event) => {
+        <button onClick={() => {
             props.handleDeleteSelectedExpense(props.expenseObj)
         }}
         >Remove
@@ -25,7 +35,6 @@ const ExpenseContainer = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    align-items: center;
     padding: 10px 20px;
 
     p {

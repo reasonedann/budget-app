@@ -1,14 +1,24 @@
-import React from 'react';
-import Header from './Header.js';
-import AddExpense from './AddExpense.js';
-import Expenses from './Expenses.js';
+import * as React from 'react';
+import Header from './Header';
+import AddExpense from './AddExpense';
+import AllExpenses from './AllExpenses';
 
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
-import styled from '@emotion/styled'
+import {jsx} from '@emotion/core';
+import styled from '@emotion/styled';
 
-export default class BudgetApp extends React.Component {
-    constructor(props) {
+import {ExpenseType} from './ExpenseItem';
+
+interface IBudgetAppState {
+    expenses: Array<ExpenseType>;
+};
+
+interface IBudgetAppProps {};
+
+export default class BudgetApp extends React.Component<IBudgetAppProps, IBudgetAppState> {
+    state: IBudgetAppState;
+
+    constructor(props: IBudgetAppProps) {
         super(props);
         this.state = {
             expenses: [
@@ -19,7 +29,7 @@ export default class BudgetApp extends React.Component {
         }
     };
 
-    handleAddExpense = (expenseName, expenseCost) => {
+    handleAddExpense = (expenseName: string, expenseCost: number) => {
         if (!expenseName && isNaN(expenseCost)) {
             return 'Please, enter valid values to add an expense to the list!';
         }
@@ -43,25 +53,26 @@ export default class BudgetApp extends React.Component {
         this.setState(() => ({ expenses: [] }))
     }
 
-    handleDeleteSelectedExpense = (expenseToDelete) => {
+    handleDeleteSelectedExpense = (expenseToDelete: ExpenseType) => {
         this.setState((prevState) => ({
-            expenses: prevState.expenses.filter((expense) => expense !== expenseToDelete)
+            expenses: prevState.expenses.filter((expense: {}) => expense !== expenseToDelete)
         }));
     }
 
     componentDidMount = () => {
         try {
             const json = localStorage.getItem('expenses');
-            const expenses = JSON.parse(json);
-
-            if(expenses) {
-                this.setState(() => ({ expenses }));
+            if(json) {
+                const expenses = JSON.parse(json);
+                if(expenses) {
+                    this.setState(() => ({ expenses }));
+                }
             }
         }
         catch (e) {
         }
     }
-    componentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = (prevState: IBudgetAppState) => {
         if (prevState.expenses.length !== this.state.expenses.length) {
             const json = JSON.stringify(this.state.expenses);
             localStorage.setItem('expenses', json)
@@ -69,16 +80,14 @@ export default class BudgetApp extends React.Component {
     }
 
     render = () => {
-        const values = []
+        const values: Array<number> = []
         this.state.expenses.map((expense) => values.push(expense.expenseCost));
-        console.log(values);
         return (
             <Container>
                 <Header />
                 <div>
-                    <Expenses
+                    <AllExpenses
                         expenses={this.state.expenses}
-                        selectedExpense={this.selectedExpense}
                         values={values}
                         handleDeleteExpenses={this.handleDeleteExpenses}
                         handleDeleteSelectedExpense={this.handleDeleteSelectedExpense}
@@ -89,7 +98,7 @@ export default class BudgetApp extends React.Component {
                     />
                 </div>
             </Container>
-        )
+        );
     }
 };
 

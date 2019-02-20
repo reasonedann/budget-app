@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-/** @jsx jsx */
 import styled from '@emotion/styled'
 
 const Header = () => (

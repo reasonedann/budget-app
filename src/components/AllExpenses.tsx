@@ -1,53 +1,43 @@
 import * as React from 'react';
-import ExpenseItem, {ExpenseType} from './ExpenseItem'
+import ExpenseItem from './ExpenseItem'
 
-/** @jsx jsx */
+import { observer } from 'mobx-react';
+
+import { BudgetAppStore } from './BudgetAppStore';
+
 import styled from '@emotion/styled'
 
-const eurPln: number = 4.284;
-
-interface IExpensesProps {
-    values: Array<number>;
-    handleDeleteExpenses: () => void;
-    hasExpenses: boolean;
-    expenses: Array<{expenseName: string, expenseCost: number}>;
-    handleDeleteSelectedExpense: (selectedExpense: ExpenseType) => void;
+interface AllExpensesProps {
+    store: BudgetAppStore;
 }
 
-export default class AllExpenses extends React.Component<IExpensesProps> {
-
-    toSumExpenses = (v: Array<number>) => {
-        const reducer = (acc: number, curValue: number) => acc + curValue;
-        return v.reduce(reducer, 0);
-    }
-    toConvertExpenseToEur = (expensePln: number) => {
-        return expensePln / eurPln;
-    }
+@observer
+export default class AllExpenses extends React.Component<AllExpensesProps> {
 
     render() {
-        const eurValues = this.props.values.map((value) => this.toConvertExpenseToEur(value));
+        const { expenses, handleDeleteExpenses, handleDeleteSelectedExpense, toSumExpenses, toSumExpensesEur } = this.props.store;
         return (
             <div>
                 <HeadButtonContainer>
                     <p>List of your expenses:</p>
                     <button
-                        onClick={this.props.handleDeleteExpenses}
-                        disabled={!this.props.hasExpenses}
+                        onClick={handleDeleteExpenses}
+                        disabled={expenses.length === 0}
                     >Remove All
                     </button>
                 </HeadButtonContainer>
                 <div>
-                {this.props.expenses.length === 0 && <GetStartedInfo>Please, add an expense to get started!</GetStartedInfo>}
+                {expenses.length === 0 && <GetStartedInfo>Please, add an expense to get started!</GetStartedInfo>}
                 {
-                    this.props.expenses.map((expense, idx) =>
+                    expenses.map((expense, idx) =>
                         <ExpenseItem
                             key={idx}
-                            expenseObj={expense}
-                            expenseCost={expense.expenseCost.toFixed(1)}
+                            expenseCost={expense.expenseCost}
                             expenseName={expense.expenseName}
-                            expenseCostEur={this.toConvertExpenseToEur(expense.expenseCost).toFixed(1)}
+                            expenseObj={expense}
+                            expenseCostEur={expense.toExpenseEur().toFixed(1)}
                             count={idx + 1}
-                            handleDeleteSelectedExpense={this.props.handleDeleteSelectedExpense}
+                            handleDeleteSelectedExpense={handleDeleteSelectedExpense}
                         />
                     )
                 }
@@ -55,8 +45,8 @@ export default class AllExpenses extends React.Component<IExpensesProps> {
                 <Line></Line>
                 <SumsContainer>
                     <p>Sum of your expenses:</p>
-                    <div>{this.toSumExpenses(this.props.values).toFixed(1)} PLN</div>
-                    <div>{this.toSumExpenses(eurValues).toFixed(1)} EUR</div>
+                    <div>{toSumExpenses.toFixed(1)} PLN</div>
+                    <div>{toSumExpensesEur.toFixed(1)} EUR</div>
                 </SumsContainer>
             </div>
         )

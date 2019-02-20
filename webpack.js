@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-    entry: './src/App.tsx',
+    entry: './src/app.tsx',
     output: {
         path: path.resolve(__dirname, 'dist/static'),
         filename: 'index.js'

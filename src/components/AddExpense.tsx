@@ -1,19 +1,20 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 
-/** @jsx jsx */
+
 import styled from '@emotion/styled'
 
-interface IAddExpenseProps {
-    handleAddExpense: (expenseName: string, expenseCost: number) => string | undefined;
+interface AddExpenseProps {
+    handleAddExpense(expenseName: string, expenseCost: number): any;
 };
-interface IAddExpenseState {
+interface AddExpenseState {
     error: any;
-};
+}
+@observer
+export default class AddExpense extends React.Component<AddExpenseProps, AddExpenseState> {
+    state: AddExpenseState;
 
-export default class AddExpense extends React.Component<IAddExpenseProps, IAddExpenseState> {
-    state: IAddExpenseState;
-
-    constructor(props: IAddExpenseProps) {
+    constructor(props: AddExpenseProps) {
         super(props)
         this.addExpenseClick = this.addExpenseClick.bind(this);
         this.state = {
@@ -38,7 +39,7 @@ export default class AddExpense extends React.Component<IAddExpenseProps, IAddEx
     };
 
     render() {
-       return (
+        return (
             <div>
                 {this.state.error && <Error>{this.state.error}</Error>}
                 <AddExpenseBox onSubmit={this.addExpenseClick}>

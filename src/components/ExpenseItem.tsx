@@ -1,33 +1,33 @@
 import * as React from 'react';
+import { Expense } from './BudgetAppStore';
 
-/** @jsx jsx */
 import styled from '@emotion/styled'
 
-export type ExpenseType = {expenseName: string, expenseCost: number};
-
-interface IExpenseItem {
+interface ExpenseItemProps {
     count: number;
-    expenseName: string;
-    expenseCost: string; // bo się wyświetla jako string bo toFixed zrobiłam
     expenseCostEur: string;
-    handleDeleteSelectedExpense: (selectedExpense: ExpenseType) => void;
-    expenseObj: ExpenseType;
+    expenseName: string;
+    expenseCost: number;
+    expenseObj: Expense;
+    handleDeleteSelectedExpense (expenseToDelete: Expense): void;
 }
 
-const ExpenseItem = (props:IExpenseItem) => (
-    <ExpenseContainer>
-        <p>{props.count}. {props.expenseName}</p>
-        <Costs>
-            <div>{props.expenseCost} PLN</div>
-            <div>{props.expenseCostEur} EUR</div>
-        </Costs>
-        <button onClick={() => {
-            props.handleDeleteSelectedExpense(props.expenseObj)
-        }}
-        >Remove
-        </button>
-    </ExpenseContainer>
-)
+const ExpenseItem = (props: ExpenseItemProps) => {
+    return (
+        <ExpenseContainer>
+            <p>{props.count}. {props.expenseName}</p>
+            <Costs>
+                <div>{props.expenseCost.toFixed(1)} PLN</div>
+                <div>{props.expenseCostEur} EUR</div>
+            </Costs>
+            <button onClick={() => {
+                props.handleDeleteSelectedExpense(props.expenseObj)
+            }}
+            >Remove
+            </button>
+        </ExpenseContainer>
+    )
+};
 
 export default ExpenseItem;
 

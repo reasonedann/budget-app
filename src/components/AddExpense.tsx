@@ -16,13 +16,13 @@ export default class AddExpense extends React.Component<AddExpenseProps, AddExpe
 
     constructor(props: AddExpenseProps) {
         super(props)
-        this.addExpenseClick = this.addExpenseClick.bind(this);
+        this.addExpenseClick = this.addExpenseClick;
         this.state = {
             error: undefined
         }
     };
 
-    addExpenseClick(event: any) {
+    addExpenseClick = (event: any) => {
         event.preventDefault();
 
         const expenseNameXs = event.target.elements.expenseNameInput.value.trim();

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {observable, action, computed} from 'mobx';
+import {observable, action, computed, autorun} from 'mobx';
 
 const eurPln: number = 4.284;
 
@@ -40,6 +40,11 @@ export class BudgetAppStore {
         }
         catch (e) {
         }
+
+        autorun(() => {
+            const json = JSON.stringify(this.expenses);
+            localStorage.setItem('expenses', json)
+        });
     }
 
     @action handleAddExpense = (expenseName: string, expenseCost: number) => {
@@ -60,17 +65,14 @@ export class BudgetAppStore {
         }
 
         this.expenses.push(new Expense(expenseName, expenseCost));
-        this.updateLocalStorage();
     };
 
     @action handleDeleteExpenses = () => {
         this.expenses = [];
-        this.updateLocalStorage();
     };
 
     @action handleDeleteSelectedExpense = (expenseToDelete: Expense) => {
         this.expenses.filter((expense: {}) => expense !== expenseToDelete);
-        this.updateLocalStorage();
     };
 
     @computed get toSumExpenses() {
@@ -83,10 +85,6 @@ export class BudgetAppStore {
         return expensesEur / eurPln
     };
 
-    private updateLocalStorage() {
-        const json = JSON.stringify(this.expenses);
-        localStorage.setItem('expenses', json)
-    };
 };
 
 export default React.createContext(

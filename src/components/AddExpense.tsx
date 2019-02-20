@@ -1,26 +1,17 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { observable } from 'mobx';
 
 
 import styled from '@emotion/styled'
 
 interface AddExpenseProps {
-    handleAddExpense(expenseName: string, expenseCost: number): any;
+    handleAddExpense(expenseName: string, expenseCost: number): string | undefined;
 };
-interface AddExpenseState {
-    error: any;
-}
-@observer
-export default class AddExpense extends React.Component<AddExpenseProps, AddExpenseState> {
-    state: AddExpenseState;
 
-    constructor(props: AddExpenseProps) {
-        super(props)
-        this.addExpenseClick = this.addExpenseClick;
-        this.state = {
-            error: undefined
-        }
-    };
+@observer
+export default class AddExpense extends React.Component<AddExpenseProps> {
+    @observable error: string | undefined = undefined
 
     addExpenseClick = (event: any) => {
         event.preventDefault();
@@ -29,10 +20,9 @@ export default class AddExpense extends React.Component<AddExpenseProps, AddExpe
         const expenseNameTxt = expenseNameXs.charAt(0).toUpperCase() + expenseNameXs.slice(1);
         const expenseCostTxt = parseFloat(event.target.elements.expenseCostInput.value);
 
-        const error = this.props.handleAddExpense(expenseNameTxt, expenseCostTxt);
+        this.error = this.props.handleAddExpense(expenseNameTxt, expenseCostTxt);
 
-        this.setState(() => ( {error} ));
-        if (!error) {
+        if (!this.error) {
             event.target.elements.expenseNameInput.value = '';
             event.target.elements.expenseCostInput.value = '';
         }
@@ -41,15 +31,15 @@ export default class AddExpense extends React.Component<AddExpenseProps, AddExpe
     render() {
         return (
             <div>
-                {this.state.error && <Error>{this.state.error}</Error>}
+                {this.error && <Error>{this.error}</Error>}
                 <AddExpenseBox onSubmit={this.addExpenseClick}>
                         <InputsContainer>
-                            <div>
-                                <p>Expense name:</p>
+                            <ExpName>
+                                <InputTitle>Expense name:</InputTitle>
                                 <InputName type="text" name="expenseNameInput"/>
-                            </div>
+                            </ExpName>
                             <div>
-                                <p>Value in PLN:</p>
+                                <InputTitle>Value in PLN:</InputTitle>
                                 <InputCost type="text" name="expenseCostInput"/>
                             </div>
                         </InputsContainer>
@@ -87,34 +77,31 @@ const AddExpenseBox = styled.form`
 
 `;
 
-    const InputsContainer = styled.div`
-        display: flex;
-        flex-flow: row wrap;
-        align-items: center;
+const InputsContainer = styled.div`
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+`;
+const ExpName = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+const GreyInput = styled.input `
+    padding: 10px 0;
+    border: 1px solid dimgrey;
+    font-size: 18px;
+    padding-left: 20px;
+`;
+const InputTitle = styled.p`
+    padding: 10px 5px;
+`;
 
-        div {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        input {
-            padding: 10px 0;
-            border: 1px solid dimgrey;
-            font-size: 18px;
-            padding-left: 20px;
-        }
-
-        p {
-            padding: 10px 5px;
-        }
-    `;
-
-const InputName = styled.input`
+const InputName = styled(GreyInput)`
     width: 280px;
     margin-right: 40px;
 `;
 
-const InputCost = styled.input`
+const InputCost = styled(GreyInput)`
     width: 120px;
     &::-webkit-outer-spin-button {
     -webkit-appearance: none;

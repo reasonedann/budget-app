@@ -24,11 +24,9 @@ export class Expense {
 
 export class BudgetAppStore {
     @observable expenses: Array<Expense>;
-    @observable error: any;
 
     constructor() {
         this.expenses = [];
-        this.error = undefined;
         try {
             const json = localStorage.getItem('expenses');
             if(json) {
@@ -72,7 +70,7 @@ export class BudgetAppStore {
     };
 
     @action handleDeleteSelectedExpense = (expenseToDelete: Expense) => {
-        this.expenses.filter((expense: {}) => expense !== expenseToDelete);
+        this.expenses.filter((expense: Expense) => expense !== expenseToDelete);
     };
 
     @computed get toSumExpenses() {

@@ -1,9 +1,59 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 
 import styled from '@emotion/styled'
+
+class InputState {
+    @observable value: string;
+
+    constructor() {
+        this.value = '';
+    }
+
+    @action setValue = (value: string) => {
+        this.value = value;
+    }
+}
+
+interface InputElementPropsType {
+    label: string,
+    state: InputState,
+    version: 'name' | 'cost'
+}
+
+@observer
+class InputElement extends React.Component<InputElementPropsType> {
+    render() {
+
+        const { label } = this.props;
+
+        return (
+            <React.Fragment>
+                <InputTitle>{label}:</InputTitle>
+                { this.renderInput() }
+            </React.Fragment>
+        );
+    }
+
+    renderInput() {
+
+        const { version } = this.props;
+        const { value } = this.props.state;
+
+        if (version === 'name') {
+            return <InputName type="text" value={value} onInput={this.onInput} />
+        } else {
+            return <InputCost type="text" value={value} onInput={this.onInput} />;
+        }
+    }
+
+    onInput = (event: React.FormEvent<HTMLInputElement>) => {
+        const { setValue } = this.props.state;
+        setValue(event.currentTarget.value);
+    }
+}
 
 interface AddExpenseProps {
     handleAddExpense(expenseName: string, expenseCost: number): string | undefined;
@@ -12,19 +62,24 @@ interface AddExpenseProps {
 @observer
 export default class AddExpense extends React.Component<AddExpenseProps> {
     @observable error: string | undefined = undefined
+    readonly expenseNameInputState = new InputState();
+    readonly expenseCostInputState = new InputState();
 
     addExpenseClick = (event: any) => {
         event.preventDefault();
 
-        const expenseNameXs = event.target.elements.expenseNameInput.value.trim();
+        const valueName = this.expenseNameInputState.value;
+        const valueCost = this.expenseCostInputState.value;
+
+        const expenseNameXs = valueName.trim();
         const expenseNameTxt = expenseNameXs.charAt(0).toUpperCase() + expenseNameXs.slice(1);
-        const expenseCostTxt = parseFloat(event.target.elements.expenseCostInput.value);
+        const expenseCostTxt = parseFloat(valueCost);
 
         this.error = this.props.handleAddExpense(expenseNameTxt, expenseCostTxt);
 
         if (!this.error) {
-            event.target.elements.expenseNameInput.value = '';
-            event.target.elements.expenseCostInput.value = '';
+            this.expenseNameInputState.setValue('');
+            this.expenseCostInputState.setValue('');
         }
     };
 
@@ -34,14 +89,8 @@ export default class AddExpense extends React.Component<AddExpenseProps> {
                 {this.error && <Error>{this.error}</Error>}
                 <AddExpenseBox onSubmit={this.addExpenseClick}>
                         <InputsContainer>
-                            <ExpName>
-                                <InputTitle>Expense name:</InputTitle>
-                                <InputName type="text" name="expenseNameInput"/>
-                            </ExpName>
-                            <div>
-                                <InputTitle>Value in PLN:</InputTitle>
-                                <InputCost type="text" name="expenseCostInput"/>
-                            </div>
+                            <InputElement version="name" label="Expense name" state={this.expenseNameInputState} />
+                            <InputElement version="cost" label="Value in PLN" state={this.expenseCostInputState} />
                         </InputsContainer>
                         <button>Add Expense</button>
                 </AddExpenseBox>

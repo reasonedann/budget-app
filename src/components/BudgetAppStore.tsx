@@ -70,7 +70,7 @@ export class BudgetAppStore {
     };
 
     @action handleDeleteSelectedExpense = (expenseToDelete: Expense) => {
-        this.expenses.filter((expense: Expense) => expense !== expenseToDelete);
+        this.expenses = this.expenses.filter((expense: Expense) => expense !== expenseToDelete);
     };
 
     @computed get toSumExpenses() {

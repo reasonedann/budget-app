@@ -45,8 +45,8 @@ export default class AllExpenses extends React.Component<AllExpensesProps> {
                 <Line></Line>
                 <SumsContainer>
                     <p>Sum of your expenses:</p>
-                    <div>{toSumExpenses.toFixed(1)} PLN</div>
-                    <div>{toSumExpensesEur.toFixed(1)} EUR</div>
+                    <SumCont>{toSumExpenses.toFixed(1)} PLN</SumCont>
+                    <SumCont>{toSumExpensesEur.toFixed(1)} EUR</SumCont>
                 </SumsContainer>
             </div>
         )
@@ -100,8 +100,8 @@ const SumsContainer = styled.div`
         font-weight: 500;
         margin-right: 80px;
     }
-
-    div {
+`;
+const SumCont = styled.div`
         background: whitesmoke;
         border: 1px solid dimgrey;
         margin: 10px 5px;
@@ -109,11 +109,10 @@ const SumsContainer = styled.div`
         text-align: right;
         padding: 15px 20px 15px 10px;
         margin: 0 5px;
-    }
 `;
 
 const GetStartedInfo = styled.p`
-    background-color: crimson;
+    background-color: green;
     color: white;
     font-size: 18px;
     text-align: center;

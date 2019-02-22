@@ -9,7 +9,7 @@ interface ExpenseItemProps {
     expenseName: string;
     expenseCost: number;
     expenseObj: Expense;
-    handleDeleteSelectedExpense (expenseToDelete: Expense): void;
+    handleDeleteSelectedExpense: (expenseToDelete: Expense) => void;
 }
 
 const ExpenseItem = (props: ExpenseItemProps) => {
@@ -17,8 +17,8 @@ const ExpenseItem = (props: ExpenseItemProps) => {
         <ExpenseContainer>
             <p>{props.count}. {props.expenseName}</p>
             <Costs>
-                <div>{props.expenseCost.toFixed(1)} PLN</div>
-                <div>{props.expenseCostEur} EUR</div>
+                <CostCont>{props.expenseCost.toFixed(1)} PLN</CostCont>
+                <CostCont>{props.expenseCostEur} EUR</CostCont>
             </Costs>
             <button onClick={() => {
                 props.handleDeleteSelectedExpense(props.expenseObj)
@@ -48,6 +48,7 @@ const ExpenseContainer = styled.div`
     button {
         background: dimgrey;
         padding: 10px 15px;
+        margin: 15px 5px;
         border-radius: 8px;
         color: white;
         font-size: 15px;
@@ -65,14 +66,14 @@ const ExpenseContainer = styled.div`
 const Costs = styled.div`
     display: flex;
     flex-flow: row wrap;
+`;
 
-    div {
-        text-align: right;
+const CostCont = styled.div`
         padding: 10px 20px 10px 10px;
+        margin: 15px 5px;
         background: whitesmoke;
-        margin: 0 5px;
-        min-width: 100px;
         border: 1px solid dimgrey;
-    }
+        min-width: 100px;
+        text-align: right;
 `;
 

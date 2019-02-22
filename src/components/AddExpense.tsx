@@ -130,27 +130,24 @@ const InputsContainer = styled.div`
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-`;
-const ExpName = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-const GreyInput = styled.input `
-    padding: 10px 0;
-    border: 1px solid dimgrey;
-    font-size: 18px;
-    padding-left: 20px;
+
+    input {
+        padding: 10px 0;
+        border: 1px solid dimgrey;
+        font-size: 18px;
+        padding-left: 20px;
+    }
 `;
 const InputTitle = styled.p`
     padding: 10px 5px;
 `;
 
-const InputName = styled(GreyInput)`
+const InputName = styled.input`
     width: 280px;
     margin-right: 40px;
 `;
 
-const InputCost = styled(GreyInput)`
+const InputCost = styled.input`
     width: 120px;
     &::-webkit-outer-spin-button {
     -webkit-appearance: none;

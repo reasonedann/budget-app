@@ -7,6 +7,7 @@ import AddExpense from './AddExpense';
 import AllExpenses from './AllExpenses';
 
 import styled from '@emotion/styled';
+import { Global, css } from '@emotion/core';
 
 const Container = styled.div`
     display: flex;
@@ -27,6 +28,12 @@ export default class BudgetApp extends React.Component<BudgetAppProps> {
         const { handleAddExpense } = this.props.store;
         return (
             <Container>
+                <Global styles={css`
+                    body {
+                        margin: 0;
+                        font-family: 'Montserrat';
+                    }
+                `}/>
                 <Header />
                 <div>
                     <AllExpenses

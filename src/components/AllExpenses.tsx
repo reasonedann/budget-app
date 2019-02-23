@@ -19,12 +19,12 @@ export default class AllExpenses extends React.Component<AllExpensesProps> {
         return (
             <div>
                 <HeadButtonContainer>
-                    <p>List of your expenses:</p>
-                    <button
+                    <ContTitle isBig>List of your expenses:</ContTitle>
+                    <BigButton
                         onClick={handleDeleteExpenses}
                         disabled={expenses.length === 0}
                     >Remove All
-                    </button>
+                    </BigButton>
                 </HeadButtonContainer>
                 <div>
                 {expenses.length === 0 && <GetStartedInfo>Please, add an expense to get started!</GetStartedInfo>}
@@ -44,7 +44,7 @@ export default class AllExpenses extends React.Component<AllExpensesProps> {
                 </div>
                 <Line></Line>
                 <SumsContainer>
-                    <p>Sum of your expenses:</p>
+                    <ContTitle>Sum of your expenses:</ContTitle>
                     <SumCont>{toSumExpenses.toFixed(1)} PLN</SumCont>
                     <SumCont>{toSumExpensesEur.toFixed(1)} EUR</SumCont>
                 </SumsContainer>
@@ -61,8 +61,9 @@ const HeadButtonContainer = styled.div`
     padding: 15px 20px;
     font-size: 22px;
     border-bottom: solid 5px white;
+`;
 
-    button {
+const BigButton = styled.button`
         background: lightgrey;
         padding: 15px 20px;
         border-radius: 8px;
@@ -71,7 +72,6 @@ const HeadButtonContainer = styled.div`
         text-decoration: none;
         vertical-align: middle;
         cursor: pointer;
-    }
 
     button:disabled {
         cursor: default;
@@ -84,7 +84,6 @@ const HeadButtonContainer = styled.div`
         background: dimgrey;
         color: white;
     }
-
 `;
 
 const SumsContainer = styled.div`
@@ -94,12 +93,12 @@ const SumsContainer = styled.div`
     align-items: center;
     padding: 15px 20px;
     margin: 0 135px 0 0;
-
-    p {
-        font-size: 20px;
+`;
+const ContTitle = styled.p`
+        font-size: ${(props: {isBig?: Boolean}) => props.isBig ? '25px' : '20px'};
         font-weight: 500;
         margin-right: 80px;
-    }
+
 `;
 const SumCont = styled.div`
         background: whitesmoke;

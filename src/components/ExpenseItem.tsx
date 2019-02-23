@@ -15,16 +15,16 @@ interface ExpenseItemProps {
 const ExpenseItem = (props: ExpenseItemProps) => {
     return (
         <ExpenseContainer>
-            <p>{props.count}. {props.expenseName}</p>
+            <ExpName>{props.count}. {props.expenseName}</ExpName>
             <Costs>
                 <CostCont>{props.expenseCost.toFixed(1)} PLN</CostCont>
                 <CostCont>{props.expenseCostEur} EUR</CostCont>
             </Costs>
-            <button onClick={() => {
+            <DeleteButton onClick={() => {
                 props.handleDeleteSelectedExpense(props.expenseObj)
             }}
             >Remove
-            </button>
+            </DeleteButton>
         </ExpenseContainer>
     )
 };
@@ -36,26 +36,25 @@ const ExpenseContainer = styled.div`
     flex-flow: row wrap;
     justify-content: space-between;
     padding: 10px 20px;
+`;
+const ExpName = styled.p`
+    font-size: 18px;
+    background: whitesmoke;
+    padding: 10px;
+    min-width: 50%;
+    border: 1px solid dimgrey;
+`;
 
-    p {
-        background: whitesmoke;
-        padding: 10px;
-        min-width: 50%;
-        border: 1px solid dimgrey;
-
-    }
-
-    button {
-        background: dimgrey;
-        padding: 10px 15px;
-        margin: 15px 5px;
-        border-radius: 8px;
-        color: white;
-        font-size: 15px;
-        text-decoration: none;
-        vertical-align: middle;
-        cursor: pointer;
-    }
+const DeleteButton = styled.button`
+    background: dimgrey;
+    padding: 10px 15px;
+    margin: 15px 5px;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
 
     button:hover {
         background: grey;
@@ -69,11 +68,11 @@ const Costs = styled.div`
 `;
 
 const CostCont = styled.div`
-        padding: 10px 20px 10px 10px;
-        margin: 15px 5px;
-        background: whitesmoke;
-        border: 1px solid dimgrey;
-        min-width: 100px;
-        text-align: right;
+    padding: 15px 20px 15px 10px;
+    margin: 15px 5px;
+    background: whitesmoke;
+    border: 1px solid dimgrey;
+    min-width: 100px;
+    text-align: right;
+    vertical-align: middle;
 `;
-

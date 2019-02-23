@@ -31,7 +31,7 @@ class InputElement extends React.Component<InputElementPropsType> {
 
         return (
             <React.Fragment>
-                <InputTitle>{label}:</InputTitle>
+                <TitleOfInput>{label}:</TitleOfInput>
                 { this.renderInput() }
             </React.Fragment>
         );
@@ -92,7 +92,7 @@ export default class AddExpense extends React.Component<AddExpenseProps> {
                             <InputElement version="name" label="Expense name" state={this.expenseNameInputState} />
                             <InputElement version="cost" label="Value in PLN" state={this.expenseCostInputState} />
                         </InputsContainer>
-                        <button>Add Expense</button>
+                        <SmallButton>Add Expense</SmallButton>
                 </AddExpenseBox>
             </div>
         );
@@ -107,48 +107,49 @@ const AddExpenseBox = styled.form`
     font-size: 18px;
     border-top: solid 6px white;
     background: whitesmoke;
+`;
 
-    button {
-        background: lightgrey;
-        padding: 10px 15px;
-        border-radius: 8px;
-        color: black;
-        font-size: 15px;
-        text-decoration: none;
-        vertical-align: middle;
-        cursor: pointer;
-    }
+const SmallButton = styled.button`
+    background: lightgrey;
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: black;
+    font-size: 15px;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
 
     button:hover {
         background: dimgrey;
         color: white;
     }
-
 `;
 
 const InputsContainer = styled.div`
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-
-    input {
-        padding: 10px 0;
-        border: 1px solid dimgrey;
-        font-size: 18px;
-        padding-left: 20px;
-    }
 `;
-const InputTitle = styled.p`
+
+const TitleOfInput = styled.p`
     padding: 10px 5px;
 `;
 
 const InputName = styled.input`
-    width: 280px;
+    padding: 10px 0;
+    border: 1px solid dimgrey;
+    font-size: 15px;
+    padding-left: 20px;
+    width: 300px;
     margin-right: 40px;
 `;
 
 const InputCost = styled.input`
-    width: 120px;
+    padding: 10px 0;
+    border: 1px solid dimgrey;
+    font-size: 15px;
+    padding-left: 20px;
+    width: 150px;
     &::-webkit-outer-spin-button {
     -webkit-appearance: none;
     }
